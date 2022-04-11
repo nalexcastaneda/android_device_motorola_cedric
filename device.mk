@@ -8,17 +8,16 @@
 $(call inherit-product, device/motorola/msm8937-common/msm8937.mk)
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/motorola/cedric/cedric-vendor.mk)
+$(call inherit-product, vendor/motorola/cedric/cedric-vendor.mk)
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
-TARGET_BOOT_ANIMATION_RES := 1080
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-aosp
+    $(LOCAL_PATH)/overlay-lineage
 
 # Properties
 -include $(LOCAL_PATH)/vendor_prop.mk
@@ -54,6 +53,10 @@ PRODUCT_PACKAGES += \
 # IDC
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/idc/uinput-fpc.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/uinput-fpc.idc
+
+# PocketMode
+PRODUCT_PACKAGES += \
+    MotoPocketMode
 
 # Ramdisk
 PRODUCT_PACKAGES += \

@@ -13,6 +13,7 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 DEVICE_PATH := device/motorola/cedric
 
 # Assert
+TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := cedric
 
 # Display
@@ -23,9 +24,7 @@ DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
 
 # Kernel
 TARGET_KERNEL_CONFIG := cedric_defconfig
-
-# NFC
-NXP_CHIP_TYPE := pn554
+TARGET_KERNEL_RECOVERY_CONFIG := cedric_recovery_defconfig
 
 # Partitions
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16879616
@@ -35,7 +34,9 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 26403126272
 VENDOR_SECURITY_PATCH := 2019-08-01
 
 # SELinux
-BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/public
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 
 # Sensors
 BOARD_USES_MOT_SENSOR_HUB := true
@@ -52,4 +53,4 @@ MOT_SENSOR_HUB_FEATURE_LA := true
 MOT_SENSOR_HUB_FEATURE_GR := true
 
 # Inherit from the proprietary version
--include vendor/motorola/cedric/BoardConfigVendor.mk
+include vendor/motorola/cedric/BoardConfigVendor.mk
