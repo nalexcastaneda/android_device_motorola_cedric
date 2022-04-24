@@ -180,8 +180,7 @@ ifeq ($(BOARD_USES_MOT_SENSOR_HUB), true)
         LOCAL_PRELINK_MODULE := false
         LOCAL_MODULE_RELATIVE_PATH := hw
         LOCAL_MODULE_TAGS := optional
-        LOCAL_VENDOR_MODULE := true
-        LOCAL_HEADER_LIBRARIES += libhardware_headers
+        LOCAL_PROPRIETARY_MODULE := true
         LOCAL_SHARED_LIBRARIES += liblog libcutils libz libdl libutils
         LOCAL_CLANG := true
         LOCAL_MODULE := sensors.$(TARGET_BOARD_PLATFORM)
@@ -204,9 +203,9 @@ ifeq ($(BOARD_USES_MOT_SENSOR_HUB), true)
     LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
     # Need the UAPI output directory to be populated with motosh.h/stml0xx.h
     LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
-    LOCAL_HEADER_LIBRARIES := libutils_headers libhardware_headers
+
     LOCAL_SHARED_LIBRARIES := libcutils libc libutils liblog
-    LOCAL_VENDOR_MODULE := true
+    LOCAL_PROPRIETARY_MODULE := true
     LOCAL_MODULE := sensorhub.$(TARGET_BOARD_PLATFORM)
     LOCAL_MODULE_TAGS := optional
     LOCAL_CFLAGS += -Wno-gnu-designator -Wno-writable-strings
@@ -224,7 +223,7 @@ ifeq ($(BOARD_USES_MOT_SENSOR_HUB), true)
     LOCAL_MODULE_TAGS := optional
     LOCAL_CFLAGS := -DLOG_TAG=\"MOTOSH\" -DMODULE_$(SH_MODULE)
     LOCAL_MODULE := motosh
-    LOCAL_VENDOR_MODULE := true
+    LOCAL_PROPRIETARY_MODULE := true
     #LOCAL_CFLAGS+= -D_DEBUG
     LOCAL_CFLAGS += -Wall -Wextra
     LOCAL_CFLAGS += -Wno-gnu-designator -Wno-writable-strings
@@ -333,7 +332,7 @@ ifeq ($(BOARD_USES_MOT_SENSOR_HUB), true)
     LOCAL_MODULE        := sensorhub-blacklist.txt
     LOCAL_MODULE_TAGS   := optional
     LOCAL_MODULE_CLASS  := ETC
-    LOCAL_MODULE_PATH   := $(TARGET_OUT_VENDOR)/firmware
+    LOCAL_MODULE_PATH   := $(TARGET_OUT)/etc/firmware
     LOCAL_SRC_FILES     := motosh_bin/sensorhub-blacklist.txt
     include $(BUILD_PREBUILT)
     # ********************************************************************************

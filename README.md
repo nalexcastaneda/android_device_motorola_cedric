@@ -1,11 +1,8 @@
-Copyright (C) 2019 The LineageOS Project
-
-Device configuration for Moto G5 (cedric)
-==================================================
+Device Tree for Moto G5 (Cedric)
+===========================================
 
 The Motorola Moto G5 (codenamed _"cedric"_) is a mid-range smartphone from Motorola mobility.
-
-## Device specifications
+It was announced on February 2017.
 
 Basic   | Spec Sheet
 -------:|:-------------------------
@@ -21,6 +18,6 @@ Display | 1920 x 1080 pixels, 5.0 inches (~441 ppi pixel density)
 Camera  | 13 MP, f/2.0, phase detection autofocus, LED flash
 Front Camera  |  5 MP, f/2.2
 
-## Device picture
+Copyright 2017 - The LineageOS Project.
 
-![Motorola Moto G5](http://cdn2.gsmarena.com/vv/pics/motorola/motorola-moto-g5-1.jpg "Moto G5")
+![Moto G5](http://cdn2.gsmarena.com/vv/pics/motorola/motorola-moto-g5-1.jpg "Moto G5")

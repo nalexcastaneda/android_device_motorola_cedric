@@ -26,25 +26,34 @@ namespace touch {
 namespace V1_0 {
 namespace implementation {
 
-KeyDisabler::KeyDisabler() {
-    mHasKeyDisabler = false;
+constexpr const char kControlPath[] = "/sys/homebutton/enable";
 
-    mFingerprintNavigation = IFingerprintNavigation::getService();
-    if (mFingerprintNavigation != nullptr)
-        mHasKeyDisabler = true;
+KeyDisabler::KeyDisabler() {
+    mHasKeyDisabler = !access(kControlPath, F_OK);
 }
 
 // Methods from ::vendor::lineage::touch::V1_0::IKeyDisabler follow.
 Return<bool> KeyDisabler::isEnabled() {
+    std::string buf;
+
     if (!mHasKeyDisabler) return false;
 
-    return mFingerprintNavigation->isEnabled();
+    if (!android::base::ReadFileToString(kControlPath, &buf, true)) {
+        LOG(ERROR) << "Failed to read " << kControlPath;
+        return false;
+    }
+
+    return std::stoi(android::base::Trim(buf)) == 0;
 }
 
 Return<bool> KeyDisabler::setEnabled(bool enabled) {
     if (!mHasKeyDisabler) return false;
 
-    mFingerprintNavigation->setNavigation(!enabled);
+    if (!android::base::WriteStringToFile((enabled ? "0" : "1"), kControlPath, true)) {
+        LOG(ERROR) << "Failed to write " << kControlPath;
+        return false;
+    }
+
     return true;
 }
 

@@ -3,32 +3,69 @@
 # Copyright (C) 2016 The CyanogenMod Project
 # Copyright (C) 2017-2020 The LineageOS Project
 #
-# SPDX-License-Identifier: Apache-2.0
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-
-# If we're being sourced by the common script that we called,
-# stop right here. No need to go down the rabbit hole.
-if [ "${BASH_SOURCE[0]}" != "${0}" ]; then
-    return
-fi
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
 set -e
 
-export BOARD_COMMON=msm8937-common
-export DEVICE=cedric
-export VENDOR=motorola
+DEVICE=cedric
+VENDOR=motorola
 
-"./../../${VENDOR}/${BOARD_COMMON}/extract-files.sh" "$@"
+# Load extract_utils and do some sanity checks
+MY_DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
-DEVICE_BLOB_ROOT="../../../vendor/${VENDOR}/${DEVICE}/proprietary"
+LINEAGE_ROOT="$MY_DIR"/../../..
 
-sed -i 's|/firmware/image|/vendor/f/image|' "${DEVICE_BLOB_ROOT}/vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-fpcservice"
-patchelf --set-soname camera.msm8937.so "${DEVICE_BLOB_ROOT}/vendor/lib/hw/camera.msm8937.so"
-patchelf --remove-needed android.hidl.base@1.0.so "${DEVICE_BLOB_ROOT}/vendor/lib/com.fingerprints.extension@1.0_vendor.so"
-patchelf --set-soname libactuator_dw9767_truly.so "${DEVICE_BLOB_ROOT}/vendor/lib/libactuator_dw9767_truly.so"
-sed -i "s/ro.product.manufacturer/ro.product.nopefacturer/" "${DEVICE_BLOB_ROOT}/vendor/lib/libmmcamera2_pproc_modules.so"
-sed -i 's|msm8953_mot_deen_camera.xml|msm8937_mot_camera_conf.xml|g' "${DEVICE_BLOB_ROOT}/vendor/lib/libmmcamera2_sensor_modules.so"
-sed -i "s/libgui/libwui/" "${DEVICE_BLOB_ROOT}/vendor/lib/libmmcamera_ppeiscore.so"
-patchelf --add-needed libppeiscore_shim.so "${DEVICE_BLOB_ROOT}/vendor/lib/libmmcamera_ppeiscore.so"
-sed -i "s/system input/system uhid input/" "${DEVICE_BLOB_ROOT}/vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-service.rc"
-sed -i "s/class late_start/class hal/" "${DEVICE_BLOB_ROOT}/vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-service.rc"
+HELPER="$LINEAGE_ROOT"/vendor/lineage/build/tools/extract_utils.sh
+if [ ! -f "$HELPER" ]; then
+    echo "Unable to find helper script at $HELPER"
+    exit 1
+fi
+. "$HELPER"
+
+# Default to sanitizing the vendor folder before extraction
+CLEAN_VENDOR=false
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -p | --path )           shift
+                                SRC=$1
+                                ;;
+        -s | --section )        shift
+                                SECTION=$1
+                                CLEAN_VENDOR=false
+                                ;;
+        -n | --no-cleanup )     CLEAN_VENDOR=false
+                                ;;
+    esac
+    shift
+done
+
+if [ -z "$SRC" ]; then
+    SRC=adb
+fi
+
+# Initialize the helper for device
+setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" true "$CLEAN_VENDOR"
+
+extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
+
+if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
+    # Reinitialize the helper for device
+    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false "$CLEAN_VENDOR"
+
+    extract "$MY_DIR"/../$DEVICE/proprietary-files.txt "$SRC" "$SECTION"
+fi
+
+"$MY_DIR"/setup-makefiles.sh

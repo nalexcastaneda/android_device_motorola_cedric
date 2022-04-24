@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <zlib.h>
 #include <time.h>
+#include <private/android_filesystem_config.h>
 
 #include <linux/stml0xx.h>
 
@@ -49,15 +50,15 @@
 #define SENSORHUB_AS_DATA_NAME      "/dev/stml0xx_as"
 
 #define SENSORS_EVENT_T_SIZE sizeof(sensors_event_t);
-#define DROPBOX_DIR "/data/vendor/sensorhub_logs"
+#define DROPBOX_DIR "/data/system/dropbox-add"
 #define DROPBOX_TAG "SENSOR_HUB"
 #define SENSORHUB_DUMPFILE  "sensor_hub"
 #define DROPBOX_FLAG_TEXT        2
 #define DROPBOX_FLAG_GZIP        4
 #define COPYSIZE 256
 
-#define GYRO_CAL_FILE  "/data/vendor/sensorhub/gyro_cal.bin"
-#define ACCEL_CAL_FILE "/data/vendor/sensorhub/accel_cal.bin"
+#define GYRO_CAL_FILE  "/data/misc/sensorhub/gyro_cal.bin"
+#define ACCEL_CAL_FILE "/data/misc/sensorhub/accel_cal.bin"
 
 // Defines for offsets into the sensorhub event data.
 #define ACCEL_X (0 * sizeof(int16_t))

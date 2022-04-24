@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <zlib.h>
 #include <time.h>
+#include <private/android_filesystem_config.h>
 #include <iterator>
 #include <vector>
 
@@ -49,10 +50,10 @@
 #define LINEAR_ACCEL_RATE_ATTR_NAME "/sys/devices/virtual/motosh/motosh_as/linear_accel_update_rate"
 
 #define SENSORS_EVENT_T_SIZE sizeof(sensors_event_t);
-#define MAG_CAL_FILE "/data/vendor/sensorhub/akmd_set.bin"
-#define GYRO_CAL_FILE "/data/vendor/sensorhub/gyro_cal.bin"
-#define ACCEL_CAL_FILE "/data/vendor/sensorhub/accel_cal.bin"
-#define DROPBOX_DIR "/data/vendor/sensorhub_logs"
+#define MAG_CAL_FILE "/data/misc/sensorhub/akmd_set.bin"
+#define GYRO_CAL_FILE "/data/misc/sensorhub/gyro_cal.bin"
+#define ACCEL_CAL_FILE "/data/misc/sensorhub/accel_cal.bin"
+#define DROPBOX_DIR "/data/system/dropbox-add"
 #define DROPBOX_TAG "SENSOR_HUB"
 #define SENSORHUB_DUMPFILE  "sensor_hub"
 #define DROPBOX_FLAG_TEXT        2
