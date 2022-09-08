@@ -13,6 +13,7 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 DEVICE_PATH := device/motorola/cedric
 
 # Assert
+TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := cedric
 
 # Display
@@ -23,6 +24,7 @@ DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
 
 # Kernel
 TARGET_KERNEL_CONFIG := cedric_defconfig
+TARGET_KERNEL_RECOVERY_CONFIG := cedric_recovery_defconfig
 
 # Partitions
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 16879616
