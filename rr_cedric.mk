@@ -13,6 +13,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_n_mr1.mk
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/rr/config/common_full_phone.mk)
 
+TARGET_FACE_UNLOCK_SUPPORTED := true
+TARGET_BOOT_ANIMATION_RES := 1080
+
 # Device identifier. This must come after all inclusions.
 PRODUCT_NAME := rr_cedric
 PRODUCT_DEVICE := cedric
